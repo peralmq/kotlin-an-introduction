@@ -8,10 +8,10 @@ brew cask install intellij-idea-ce
 ### Code:
 ```kotlin
 // Variables
+// Immutable
+// assign once == read-only
 val a: Int = 1
-val b = 2
-val c: Int
-c = 3 // assign once == read-only
+val b = 2 // Shorthand
 
 // Mutable
 var x = 4
@@ -21,7 +21,7 @@ x += 1
 fun add(a: Int, b: Int): Int {
   return a + b
 }
-fun add(a: Int, b: Int) = a + b
+fun add(a: Int, b: Int) = a + b // Shorthand
 fun add2(a: Int) = add(a, b=2)
 add2(1) // 3
 
@@ -93,7 +93,7 @@ if (success) {
   println("failure")
 }
 
-// Everything is an object
+// Everything is an expression
 val result = if (success) {
   "success"
 } else {
@@ -103,7 +103,7 @@ println(result) // success
 
 // When
 val number = 2
-val numberString = when(number) {
+val numberString = when(number) { // everything is an expression
     1 -> "one"
     2,3 -> "two or three"
     in 4..10 -> "between 4 and 10"
@@ -130,11 +130,19 @@ fun autoCastStringLength(obj: Any): Int? {
 }
 
 // Extension functions
-fun String.spaceToCamelCase() { ... }
+fun String.spaceToCamelCase(): String {
+  return this.mapIndexed { i, c ->
+    if (i != 0 && s[i -  1] == ' ') {
+      c.toUpperCase()
+    } else {
+      c
+    }
+  }.filter { it != ' ' }.toString()
+}
 "Convert this to camelcase".spaceToCamelCase()
 
 // Execute with special context - Standard.kt
-class MyClass {
+class Context {
     fun test() {
         val str: String = "..."
         // with(str) { // run, with
@@ -145,6 +153,17 @@ class MyClass {
         }
     }
 }
+Context().test()
+
+// Initialize on usage with lazy
+class Inits(val a: String) {}
+val myLazyInit by lazy {
+     Inits("I'm lazy")
+}
+
+// Dependency injection or mutable late initialization
+lateinit var myLateInit: Inits
+myLateInit = Inits("I'm late")
 ```
 ### Run the Kotlin REPL:
 ```
