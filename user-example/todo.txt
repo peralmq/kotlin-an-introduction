@@ -1,0 +1,7 @@
+0. Print a user
+1. Get a list of users from a function
+2. Filter the users
+3. Return the users in a success result
+4. Add a user result
+5. Return user failure if no user is found
+6. Refactor
