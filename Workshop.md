@@ -132,7 +132,7 @@ fun autoCastStringLength(obj: Any): Int? {
 // Extension functions
 fun String.spaceToCamelCase(): String {
   return this.mapIndexed { i, c ->
-    if (i != 0 && s[i -  1] == ' ') {
+    if (i != 0 && this[i -  1] == ' ') {
       c.toUpperCase()
     } else {
       c
